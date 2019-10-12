@@ -1,5 +1,6 @@
-import { Post } from './post.model';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Post } from './post.model';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -7,7 +8,7 @@ export class PostsService {
   private posts: Post[] = [];
   private postUpdated = new Subject<Post[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getPosts() {
     this.http
@@ -47,6 +48,7 @@ export class PostsService {
       post.id = id;
       this.posts.push(post);
       this.postUpdated.next([...this.posts]);
+      this.router.navigate(['/']);
     });
   }
 
@@ -59,6 +61,7 @@ updatePost(id: string, post: Post) {
       updatedPosts[postIndex] = post;
       this.posts = updatedPosts;
       this.postUpdated.next([...this.posts]);
+      this.router.navigate(['/']);
     });
 }
 
