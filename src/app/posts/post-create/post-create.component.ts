@@ -1,8 +1,10 @@
-import { PostsService } from './../posts.service';
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Post } from '../post.model';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, EventEmitter, OnInit } from '@angular/core';
+
+import { PostsService } from './../posts.service';
+import { Post } from '../post.model';
+import { mimeType } from './mime-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -27,7 +29,10 @@ export class PostCreateComponent implements OnInit {
       content: new FormControl(
         null,
         {validators: [Validators.required]}),
-      image: new FormControl(null)
+      image: new FormControl(null, {
+        validators: [Validators.required],
+        asyncValidators: [mimeType]
+      })
     });
     this.router.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
